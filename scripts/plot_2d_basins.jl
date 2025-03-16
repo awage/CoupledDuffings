@@ -44,7 +44,10 @@ function compute_basins(di::Dict)
                     attractor_locate_steps = 1000)
     #random ics for now
     Nics = 10000
-    bsn = @showprogress [ mapper(4*(rand(N*2).- 0.5)) for k in 1:Nics]
+    xg = yg = range(-5,5, length = 100) 
+    # bsn = @showprogress [ mapper(4*(rand(N*2).- 0.5)) for k in 1:Nics]
+    bsn = @showprogress [ mapper([x; 0.; y; 0.; zeros(2*(N-2))]) for x in xg, y in yg]
+
     att = extract_attractors(mapper)
     return @strdict(bsn,  att)
 end
@@ -59,7 +62,9 @@ function get_trajectory(u0, T, di::Dict)
     return  y,t 
 end
 
-N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
+# N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
+N = 9; c = 0.1; k1 = 1; k3 = 0.5; F = 0.4; kc = 0.5; ω = 1.5035
+
 params = @strdict N c k1 k3 F kc ω
 
 # get a sample trajectory: 
