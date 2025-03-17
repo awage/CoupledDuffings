@@ -21,4 +21,5 @@ N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
 dps = duffing_parameters(N, c, k1, k3, F, kc, ω) 
 
 # compute basins
-bsn, att  = compute_basins_random(params)
+mapper = get_mapper(dps)
+bsn, att  = compute_basins_random(mapper, N)
