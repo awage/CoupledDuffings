@@ -21,3 +21,6 @@ dps = duffing_parameters(N, c, k1, k3, F, kc, ω)
 # compute basins
 mapper = get_mapper(dps)
 bsn, att = compute_basins(mapper, N)
+
+xg = yg = range(-5,5, length = 100) 
+heatmap(xg, yg, bsn)
