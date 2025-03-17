@@ -7,7 +7,7 @@ using Attractors
 include(srcdir("duffing_mapper.jl"))
 
 N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
-dps = duffing_parameter(N, c, k1, k3, F, kc, ω) 
+dps = duffing_parameters(N, c, k1, k3, F, kc, ω) 
 
 # compute globl continuation of attractors
 yg = range(-5,5, length=10)
