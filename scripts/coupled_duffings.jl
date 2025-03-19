@@ -25,6 +25,7 @@ dps = duffing_parameters(N, c, k1, k3, F, kc, ω)
 # compute basins
 
 
-bsn, att  = compute_basins_random(dps)
 
-produce_or_load(compute_basins_random, dps; prefix = "coupled_duffings")
+dat, _ = produce_or_load(compute_basins_random, dps; prefix = "coupled_duffings", force = false)
+
+@unpack bsn, att = dat
