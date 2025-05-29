@@ -1,5 +1,6 @@
 using Attractors
-using OrdinaryDiffEq:Vern9
+# using OrdinaryDiffEq:Vern9
+using OrdinaryDiffEqVerner
 using LinearAlgebra 
 
 
@@ -41,15 +42,15 @@ end
 
 function get_mapper(dps::DuffingParameters)
     (;N, W, c, k1, k3, F, kc, ω) = dps
-    diffeq = (alg = Vern9(), reltol = 1e-8, maxiters = 1e8)
+    diffeq = (alg = Vern9(), reltol = 1e-8, maxiters = 1e6)
     ds = CoupledODEs(coupled_duffings!, rand(N*2), dps; diffeq)
     smap = StroboscopicMap(ds, 2*pi/ω) # Stroboscopic map definition
-    yg =  collect(range(-10, 10; length = 50001))
+    yg =  collect(range(-20, 20; length = 5001))
     grid = ntuple(x -> yg, N*2)
     mapper = AttractorsViaRecurrences(smap, grid; 
                     consecutive_basin_steps = 100, 
-                    consecutive_recurrences = 1000,
-                    attractor_locate_steps = 1000)
+                    consecutive_recurrences = 2000,
+                    attractor_locate_steps = 2000)
     return mapper
 end
 

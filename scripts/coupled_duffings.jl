@@ -3,7 +3,8 @@ using DrWatson
 using CairoMakie
 using LaTeXStrings
 using Attractors
-using OrdinaryDiffEq:Vern9
+using OrdinaryDiffEqVerner
+# using OrdinaryDiffEq:Vern9
 using ProgressMeter
 using LinearAlgebra 
 
@@ -19,10 +20,14 @@ function compute_basins_random(dps::DuffingParameters)
     return @strdict(bsn,  att)
 end
 
-N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
-dps = duffing_parameters(N, c, k1, k3, F, kc, ω) 
+# N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
 
-# compute basins
-dat, _ = produce_or_load(compute_basins_random, dps; prefix = "coupled_duffings", force = false)
-
-@unpack bsn, att = dat
+N = 3; c = 0.1; k1 = 1.0; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
+prange = range(0.05, 0.5, step = 0.01)
+for kc in prange
+    @show kc
+    dps = duffing_parameters(N, c, k1, k3, F, kc, ω) 
+    # compute basins
+    dat, _ = produce_or_load(compute_basins_random, dps; prefix = "coupled_duffings", force = false)
+    @unpack bsn, att = dat
+end
