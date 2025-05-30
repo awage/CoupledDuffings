@@ -6,7 +6,7 @@ using Attractors
 
 include(srcdir("duffing_mapper.jl"))
 
-function compute_freq_sweep(params::dict)
+function compute_freq_sweep(params::Dict)
     @unpack  Np, Nsamples = params
     # N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
     N = 3; c = 0.1; k1 = 1.0; k3 = 0.5; F = 0.4; kc = 0.05; ω = 1.2457
