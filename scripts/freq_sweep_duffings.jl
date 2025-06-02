@@ -32,7 +32,7 @@ function compute_freq_sweep(params::Dict)
 end
 
 
-Np = 5; Nsamples = 500
+Np = 20; Nsamples = 500
 params = @strdict Np Nsamples
 
 dat, _ = produce_or_load(compute_freq_sweep, params; prefix = "freq_sweep", force = false)
