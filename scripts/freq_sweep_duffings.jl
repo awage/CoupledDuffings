@@ -21,7 +21,8 @@ function compute_freq_sweep(params::Dict)
     sampler, _ = statespace_sampler(grid) 
     mapper = get_mapper(dps)
 
-    ascm = AttractorSeedContinueMatch(mapper)
+    matcher = MatchBySSSetDistance(; distance = Hausdorff())
+    ascm = AttractorSeedContinueMatch(mapper, matcher)
     pidx = :ω
     fractions_cont, attractors_cont = global_continuation(
         ascm, prange, pidx, sampler; samples_per_parameter = Nsamples
@@ -31,12 +32,12 @@ function compute_freq_sweep(params::Dict)
 end
 
 
-Np = 10; Nsamples = 100
+Np = 5; Nsamples = 500
 params = @strdict Np Nsamples
 
-dat, _ = produce_or_load(compute_freq_sweep, params; prefix = "freq_sweep", force = true)
+dat, _ = produce_or_load(compute_freq_sweep, params; prefix = "freq_sweep", force = false)
 @unpack fractions_cont, attractors_cont, prange = dat
 
-fig = plot_basins_attractors_curves(fractions_cont, attractors_cont, A -> minimum(A[:, 1]), prange)
+fig = plot_basins_attractors_curves(fractions_cont, attractors_cont, A -> maximum(A[:, 1]), prange)
 
 # @save "freq_sweep.jld2" fractions_cont attractors_cont fig

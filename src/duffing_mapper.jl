@@ -49,8 +49,8 @@ function get_mapper(dps::DuffingParameters)
     grid = ntuple(x -> yg, N*2)
     mapper = AttractorsViaRecurrences(smap, grid; 
                     consecutive_basin_steps = 100, 
-                    consecutive_recurrences = 2000,
-                    attractor_locate_steps = 2000)
+                    consecutive_recurrences = 1000,
+                    attractor_locate_steps = 1000)
     return mapper
 end
 
