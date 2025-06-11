@@ -1,15 +1,16 @@
 using DrWatson
 @quickactivate 
 using CairoMakie
+using Statistics
 using LaTeXStrings
 using Attractors
 
 include(srcdir("duffing_mapper.jl"))
 
 function compute_freq_sweep(params::Dict)
-    @unpack  Np, Nsamples = params
+    @unpack  Np, Nsamples, N = params
     # N = 5; c = 0.1; k1 = 1.; k3 = 0.1; F = 0.4; kc = 0.05; ω = 1.2457
-    N = 3; c = 0.1; k1 = 1.0; k3 = 0.5; F = 0.4; kc = 0.05; ω = 1.2457
+    c = 0.1; k1 = 1.0; k3 = 0.5; F = 0.4; kc = 0.05; ω = 1.2457
     # prange = range(0.05, 0.5, length = 50)
     prange = range(1., 2., length = Np)
     # prange = range(0.05, 0.5, step = 0.01)
@@ -32,12 +33,17 @@ function compute_freq_sweep(params::Dict)
 end
 
 
-Np = 20; Nsamples = 500
-params = @strdict Np Nsamples
+Np = 10; Nsamples = 1000; N = 5
+params = @strdict Np Nsamples N
 
 dat, _ = produce_or_load(compute_freq_sweep, params; prefix = "freq_sweep", force = false)
 @unpack fractions_cont, attractors_cont, prange = dat
 
-fig = plot_basins_attractors_curves(fractions_cont, attractors_cont, A -> maximum(A[:, 1]), prange)
+matcher = MatchBySSSetDistance(; distance = Hausdorff())
+rmaps = match_sequentially!(attractors_cont, matcher)
+match_sequentially!(fractions_cont, rmaps)
+
+fig = plot_basins_attractors_curves(fractions_cont, attractors_cont, A -> maximum(mean(Matrix(A),dims = 2)), prange)
+# fig = plot_basins_attractors_curves(fractions_cont, attractors_cont, A -> maximum(std(Matrix(A),dims = 2)), prange)
 
 # @save "freq_sweep.jld2" fractions_cont attractors_cont fig
