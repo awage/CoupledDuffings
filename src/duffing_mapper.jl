@@ -45,7 +45,7 @@ function get_mapper(dps::DuffingParameters)
     diffeq = (alg = Vern9(), reltol = 1e-8, maxiters = 1e6)
     ds = CoupledODEs(coupled_duffings!, rand(N*2), dps; diffeq)
     smap = StroboscopicMap(ds, 2*pi/ω) # Stroboscopic map definition
-    yg =  collect(range(-20, 20; length = 5001))
+    yg =  collect(range(-20, 20; length = 15001))
     grid = ntuple(x -> yg, N*2)
     mapper = AttractorsViaRecurrences(smap, grid; 
                     consecutive_basin_steps = 100, 

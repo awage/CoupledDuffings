@@ -6,8 +6,6 @@ include(srcdir("duffing_mapper.jl"))
 
 
 function compute_basins(mapper, N)
-    #random ics for now
-    Nics = 10000
     xg = yg = range(-5,5, length = 100) 
     bsn = @showprogress [ mapper([x; 0.; y; 0.; zeros(2*(N-2))]) for x in xg, y in yg]
     att = extract_attractors(mapper)
@@ -23,4 +21,10 @@ mapper = get_mapper(dps)
 bsn, att = compute_basins(mapper, N)
 
 xg = yg = range(-5,5, length = 100) 
-heatmap(xg, yg, bsn)
+
+f = Figure(size = (800,800))
+ax = Axis(f[1,1], xlabel = L"x_1", ylabel = L"x_2") #, yscale = log10);
+
+heatmap!(ax, xg, yg, bsn; rasterize = true)
+save("test.svg",f)
+
