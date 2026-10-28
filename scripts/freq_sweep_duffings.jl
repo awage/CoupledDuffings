@@ -18,15 +18,14 @@ function compute_freq_sweep(params::Dict)
     # compute globl continuation of attractors
     yg = range(-5,5, length=10)
     grid = ntuple(x -> yg, N*2)
-    sampler, _ = statespace_sampler(grid) 
+    sampler = RandomICsSampler(Nsamples, grid) 
     mapper = get_mapper(dps)
 
     matcher = MatchBySSSetDistance(; distance = Hausdorff())
     ascm = AttractorSeedContinueMatch(mapper, matcher)
     pidx = :ω
-    fractions_cont, attractors_cont = global_continuation(
-        ascm, prange, pidx, sampler; samples_per_parameter = Nsamples
-    )
+    pcurve = [Dict(pidx => p) for p in prange]
+    fractions_cont, attractors_cont = global_continuation(ascm, pcurve, sampler)
 
     return @strdict(fractions_cont,  attractors_cont, prange, dps)
 end

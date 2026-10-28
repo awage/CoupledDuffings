@@ -47,7 +47,7 @@ function get_mapper(dps::DuffingParameters)
     smap = StroboscopicMap(ds, 2*pi/ω) # Stroboscopic map definition
     yg =  collect(range(-20, 20; length = 15001))
     grid = ntuple(x -> yg, N*2)
-    mapper = AttractorsViaRecurrences(smap, grid; 
+    mapper = BasinMapRecurrences(smap, grid; 
                     consecutive_basin_steps = 100, 
                     consecutive_recurrences = 1000,
                     attractor_locate_steps = 1000)
